@@ -6,8 +6,8 @@ import cors from "cors";
 
 dotenv.config()
 
-const CONNECT_URL = process.env.CONNECT_URL;
-const PORT = process.env.PORT;
+// const CONNECT_URL = process.env.CONNECT_URL;
+// const PORT = process.env.PORT;
 
 const app = express();
 app.use(express.static("./public"));
@@ -17,8 +17,8 @@ app.use(cors());
 app.use(express.json());
 
 
-mongoose.connect(CONNECT_URL).then(() => {
-    app.listen(PORT, () => {
-        console.log(`\n The Server is Running on http://localhost:${PORT} \n`)
+mongoose.connect(mongodb+srv://DemoOne:DemoOne@arockiyaraja.6ottvpg.mongodb.net/SIMPLEPOS?retryWrites=true&w=majority&appName=arockiyaraja).then(() => {
+    app.listen(5000, () => {
+        console.log(`\n The Server is Running on http://localhost:5000 \n`)
     })
 }).catch(error => console.log(error))
