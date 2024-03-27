@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              clifford: "#da373d",
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer utilities {
+        .content-auto {
+          content-visibility: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="flex items-center justify-between px-20 py-4 bg-gray-800 text-white"
+    >
+      <div class="font-[700] text-[1.5rem]">E Mart</div>
+      <a
+        href="./Index.html"
+        class="px-5 py-1 rounded-md bg-blue-500 flex items-center justify-center gap-2 hover:bg-blue-600"
+      >
+        Back To Home
+      </a>
+    </nav>
+    <div class="">
+      <form
+        action=""
+        id="product-data-form"
+        class="w-[330px] mx-auto border p-5 mt-10 rounded-md flex flex-col gap-5"
+      >
+        <div class="font-[700] text-[1.5rem]">Add Product</div>
+        <label for="ProductName">
+          <input
+            type="text"
+            placeholder="ProductName"
+            id="ProductName"
+            name="ProductName"
+            class="border w-full p-2 rounded-md"
+          />
+        </label>
+        <label for="Price">
+          <input
+            type="text"
+            placeholder="Price"
+            id="Price"
+            name="Price"
+            class="border w-full p-2 rounded-md"
+          />
+        </label>
+        <label for="ProductImage">
+          <input
+            type="text"
+            placeholder="ProductImage"
+            id="ProductImage"
+            name="ProductImage"
+            class="border w-full p-2 rounded-md"
+          />
+        </label>
+        <label for="Category">
+          <input
+            type="text"
+            placeholder="Category"
+            id="Category"
+            name="Category"
+            class="border w-full p-2 rounded-md"
+          />
+        </label>
+        <input
+          type="button"
+          value="Add Product"
+          id="btn"
+          class="w-full p-1 rounded-md border bg-blue-500 text-white"
+        />
+      </form>
+    </div>
+
+    <script>
+      document.getElementById("btn").addEventListener("click", async (e) => {
+        const ProductData = document.getElementById("product-data-form");
+        const request = await fetch("http://localhost:5000/Emart/ProductAdd", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(new FormData(ProductData)),
+        });
+        const response = await request.json();
+        if (response.success) {
+          alert("Product Added Successfully");
+        } else {
+          alert("Failed to add");
+        }
+      });
+    </script>
+  </body>
+</html>

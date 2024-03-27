@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E mart Shopping admin page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav
+      class="flex items-center justify-between px-20 py-4 bg-gray-800 text-white"
+    >
+      <div class="font-[700] text-[1.5rem]">E Mart</div>
+      <a
+        href="./AddProduct.html"
+        class="px-5 py-1 rounded-md bg-blue-500 flex items-center justify-center gap-2 hover:bg-blue-600"
+      >
+        Add Product <i class="bx bxs-coin-stack"></i>
+      </a>
+    </nav>
+    <div
+      class="container flex items-center justify-center gap-10 flex-wrap p-10"
+      id="container"
+    ></div>
+    <a
+      class="px-5 py-1 rounded bg-red-500 text-white fixed bottom-10 right-10 hover:shadow-xl hover:bg-red-600 flex items-center justify-center gap-2"
+      href="./Cart.html"
+      >Cart <i class="bx bx-cart-alt"></i
+    ></a>
+    <script>
+      async function GetAllProducts() {
+        try {
+          const request = await fetch(
+            "http://localhost:5000/Emart/ProductGet",
+            {
+              method: "GET",
+            }
+          );
+          const response = await request.json();
+          console.log(response.data);
+          const ProductUI =
+            response.data &&
+            response.data.map((target, index) => {
+              return `
+            <div key='${index}' class='border p-3 rounded-md hover:shadow-xl cursor-pointer'>
+              <div class='font-[700] hover:underline'>${target.ProductName}</div>
+              <img src='${target.ProductImage}' alt='${index}' class='w-[300px] h-[150px] rounded-md mt-5'>
+              <div class='mt-5 flex items-center justify-between gap-5'>
+                <div class='font-[500]'>₹${target.Price}</div>
+                <button onClick='AddToCart("${target._id}")' class='px-3 text-sm py-1 rounded-md hover:shadow-xl bg-gray-500 text-white hover:bg-red-500'>Add To Cart</button>
+              </div>
+            </div>
+            `;
+            });
+
+          document.getElementById("container").innerHTML = ProductUI.join(" ");
+        } catch (error) {
+          console.log("problem with Index page", error);
+        }
+      }
+      GetAllProducts();
+
+      async function AddToCart(id) {
+        const request = await fetch(
+          `http://localhost:5000/Emart/AddToCart/${id}`,
+          {
+            method: "POST",
+          }
+        );
+        const response = await request.json();
+        if (response.success) {
+          alert("product Added to cart");
+        } else {
+          alert(response.message);
+        }
+      }
+    </script>
+  </body>
+</html>
